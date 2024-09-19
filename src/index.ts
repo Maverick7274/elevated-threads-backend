@@ -4,10 +4,12 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import compression from "compression";
-import dotrnv from "dotenv";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-dotrnv.config();
+import router from "./router";
+
+dotenv.config();
 
 const app = express();
 
@@ -22,7 +24,9 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
-server.listen(4000, () => {
+const port = process.env.PORT || 5000;
+
+server.listen(port, () => {
     console.log("Server is running on port 4000");
 });
 
@@ -33,3 +37,4 @@ mongoose.connection.on("error", (error) => {
     process.exit(1);
 });
 
+app.use('/', router())
